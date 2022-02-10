@@ -1,11 +1,12 @@
 #include <Arduino.h>
+#include <math.h>
 
 // Pino para alterar PWM
 const int pinAlteraPWM = 15;
 
 // Configurações PWM
 const int motor  = 16;          // Define a porta de saída do sinal PWM.
-int freq = 100;        // Define a frequencia a ser utilizada
+int freq = 32;        // Define a frequencia a ser utilizada
 const int motorChannel = 0;
 int resolution = 8;           // Define a resolução que será utilizada no PWM.
 
@@ -17,6 +18,8 @@ bool aux = 1;
 int tempo_p = 0, tempo_a = 0;
 int dT = 0;
 int i = 0;
+float sine;
+int sine_i;
 
 void alteraFreq(){
     if( freq < 20000){
@@ -47,34 +50,22 @@ void inicializaPWM()
 
     // Configura o LED PWM
     ledcSetup(motorChannel, freq, resolution);  
-    ledcWrite(motorChannel, 127);
+    ledcWrite(motorChannel, 179);
 
 }
 
 void senoide()
 {
-    tempo_a = millis();
-    dT = tempo_a - tempo_p;    
-    if(aux == 1 && dT > T){
-        i++;
-        // Serial.println(i);
-        ledcWrite(motorChannel, i);
-        tempo_p = tempo_a;
+    // 
+    
+    for(int i = -180; i<=180; i++){
+        sine = sin(i*(PI/180.0)*freq);
+        sine_i = 179 + int(0.1*sine*255.0/2.0);
+        ledcWrite(motorChannel, sine_i);
+        Serial.println(sine_i);
+        // Serial.print(";");
+        // Serial.print(sine_i);
+        // Serial.print(";");
+        // Serial.println(sine_i);
     }
-
-    if(aux == 0 && dT > T){
-        i--;
-        // Serial.println(i);
-        ledcWrite(motorChannel, i);
-        tempo_p = tempo_a;
-    }
-
-
-
-    if (i == 255 || i == 0){
-        aux = !aux;
-
-    }
-
-    delay(10);
 }

@@ -52,10 +52,10 @@ void setup() {
 void loop() {
   tempo_passado = tempo_atual;
   // Faz a medição de velocidade
-  measureVelocity();
+  // measureVelocity();
   
-  // Faz a medição de corrente com filtro de media movel
-  measureCurrent();
+  // // Faz a medição de corrente com filtro de media movel
+  // measureCurrent();
 
   // Senoide
   senoide();
