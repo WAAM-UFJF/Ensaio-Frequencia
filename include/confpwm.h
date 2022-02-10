@@ -7,4 +7,6 @@ void alteraPWM();
 
 void inicializaPWM();
 
+void senoide();
+
 #endif

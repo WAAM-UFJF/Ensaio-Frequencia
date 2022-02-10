@@ -42,6 +42,9 @@ void setup() {
 
   // Altera PWM
   verificaPWM();
+
+  // Senoide no PWM
+  // xTaskCreatePinnedToCore(senoide, "loop2", 8192, NULL, 1, NULL, 0);
 }
 
 
@@ -49,10 +52,14 @@ void setup() {
 void loop() {
   tempo_passado = tempo_atual;
   // Faz a medição de velocidade
-  measureVelocity();
+  // measureVelocity();
   
-  // Faz a medição de corrente com filtro de media movel
-  measureCurrent();
+  // // Faz a medição de corrente com filtro de media movel
+  // measureCurrent();
+
+  // Senoide
+  senoide();
+
 
   Serial.println(degrau);
   tempo_atual = millis();

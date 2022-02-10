@@ -68,10 +68,12 @@ class plotTempoReal():
                 print("Erro ao tentar realizar o plot com dados completos!")
 
         try:
-            self._axs[0].set_xlim(0, self._tamJanela)
-            self._axs[1].set_xlim(0, self._tamJanela)
-            self._axs[0].set_ylim(0, 50)
-            self._axs[1].set_ylim(60, 120) # Comentar aqui
+            # self._axs[0].set_xlim(0, self._tamJanela)
+            # self._axs[1].set_xlim(0, self._tamJanela)
+            self._axs[0].set_xlim([0, 0.01])
+            self._axs[1].set_xlim([0, 0.01])
+            # self._axs[0].set_ylim(0, 50)
+            # self._axs[1].set_ylim(60, 120) # Comentar aqui
             self._axs[0].set_xticks([i for i in range(0, self._tamJanela+1)]) 
             self._axs[1].set_xticks([i for i in range(0, self._tamJanela+1)])            
             self._axs[0].set_xlabel("Tempo [s]", fontsize = 16) 
