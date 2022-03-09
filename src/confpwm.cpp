@@ -62,7 +62,7 @@ void senoide()
         sine = sin(i*(PI/180.0)*freq);
         sine_i = 179 + int(0.1*sine*255.0/2.0);
         ledcWrite(motorChannel, sine_i);
-        Serial.println(sine_i);
+        // Serial.println(sine_i);
         // Serial.print(";");
         // Serial.print(sine_i);
         // Serial.print(";");

@@ -9,6 +9,7 @@
 #include <confpwm.h>
 #include <measurecurrent.h>
 #include <measurevelocity.h>
+#include <spwm.h>
 
 #define SDA 21
 #define SCL 22
@@ -43,6 +44,9 @@ void setup() {
   // Altera PWM
   verificaPWM();
 
+  // sPWM
+  pwm();
+
   // Senoide no PWM
   // xTaskCreatePinnedToCore(senoide, "loop2", 8192, NULL, 1, NULL, 0);
 }
@@ -58,11 +62,11 @@ void loop() {
   // measureCurrent();
 
   // Senoide
-  senoide();
+  // senoide();
 
 
-  Serial.println(degrau);
-  tempo_atual = millis();
+  // Serial.println(degrau);
+  // tempo_atual = millis();
 
   // Serial.println(tempo_atual - tempo_passado);
 
