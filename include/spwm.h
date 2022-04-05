@@ -1,10 +1,8 @@
 #ifndef SPWM_H
 #define SPWM_H
 
-void spwm();
+void sPWM();
 
-void pwm();
-
-void medicoes();
+void IRAM_ATTR onTimer();
 
 #endif

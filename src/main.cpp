@@ -1,4 +1,4 @@
-// Bibliotecas
+// // Bibliotecas
 #include <Arduino.h>
 #include <Wire.h> 
 #include <Adafruit_INA219.h>
@@ -19,8 +19,6 @@
 const int sentidoMotor1 = 2;  // Porta para definir o sentido de rotação 1.
 const int sentidoMotor2 = 0;  // Porta para definir o sentido de rotação 2.
 
-static int tempo_atual = 0, tempo_passado = 0;
-
 extern int degrau;
 
 void setup() {
@@ -36,38 +34,27 @@ void setup() {
   inicializaINA();
 
   // Inicializa o PWM do motor com D = 0.6
-  inicializaPWM();
+  // inicializaPWM();
 
   // Inicializa o encoder
   EncoderInit();
 
   // Altera PWM
-  verificaPWM();
+  // verificaPWM();
 
   // sPWM
-  pwm();
-
-  // Senoide no PWM
-  // xTaskCreatePinnedToCore(senoide, "loop2", 8192, NULL, 1, NULL, 0);
+  sPWM();
 }
 
 
 
 void loop() {
-  tempo_passado = tempo_atual;
   // Faz a medição de velocidade
   // measureVelocity();
   
   // // Faz a medição de corrente com filtro de media movel
   // measureCurrent();
 
-  // Senoide
-  // senoide();
-
-
   // Serial.println(degrau);
-  // tempo_atual = millis();
-
-  // Serial.println(tempo_atual - tempo_passado);
 
 }

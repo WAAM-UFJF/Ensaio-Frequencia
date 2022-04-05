@@ -6,9 +6,9 @@ const int pinAlteraPWM = 15;
 
 // Configurações PWM
 const int motor  = 16;          // Define a porta de saída do sinal PWM.
-int freq = 32;        // Define a frequencia a ser utilizada
+int freq = 32;                  // Define a frequencia a ser utilizada
 const int motorChannel = 0;
-int resolution = 8;           // Define a resolução que será utilizada no PWM.
+int resolution = 8;             // Define a resolução que será utilizada no PWM.
 
 int degrau = 0;
 
