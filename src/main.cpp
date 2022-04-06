@@ -49,7 +49,7 @@ void setup() {
 
 
 void loop() {
-  // Faz a medição de velocidade
+  // // Faz a medição de velocidade
   // measureVelocity();
   
   // // Faz a medição de corrente com filtro de media movel

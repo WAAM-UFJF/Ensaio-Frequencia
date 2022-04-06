@@ -1,9 +1,21 @@
 #include <Arduino.h>
+#include <measurecurrent.h>
+#include <measurevelocity.h>
 
 #define Num_Samples  112
 #define MaxWaveTypes 4 
 
 #define PIN_PWM 16                // Porta de saída para o sPWM que alimenta a ponte-h.
+
+int freq_spwm = 80000;
+int index_spwm = 0;
+static int canal = 0;
+
+/* create a hardware timer */
+hw_timer_t * timer = NULL;
+
+/* LED state */
+volatile byte state = LOW;
 
 // static byte WaveFormTable[Num_Samples] = {
 //     0x80, 0x83, 0x87, 0x8A, 0x8E, 0x91, 0x95, 0x98, 0x9B, 0x9E, 0xA2, 0xA5, 0xA7, 0xAA, 0xAD, 0xAF,
@@ -26,15 +38,7 @@ const unsigned char WaveFormTable[Num_Samples] = {
 };
 
 
-int freq_spwm = 80000;
-int index_spwm = 0;
-static int canal = 0;
 
-/* create a hardware timer */
-hw_timer_t * timer = NULL;
-
-/* LED state */
-volatile byte state = LOW;
 
 void IRAM_ATTR onTimer(){
   ledcWrite(canal, WaveFormTable[index_spwm]);
@@ -50,8 +54,6 @@ void sPWM() {
   ledcAttachPin(PIN_PWM, canal);
   ledcSetup(canal, freq_spwm, 8);
   ledcWrite(canal, 0);
-
-
 
   /* Use 1st timer of 4 */
   /* 1 tick take 1/(80MHZ/80) = 1us so we set divider 80 and count up */
