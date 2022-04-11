@@ -38,6 +38,7 @@ void calculapulso()
     tempo_atual = millis();
     deltaT = tempo_atual - tempo_passado;
     pulso = 0;
+    // Serial.println("Encoder funcionando!");
   }
 }
 

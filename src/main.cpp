@@ -14,6 +14,17 @@
 #define SDA 21
 #define SCL 22
 
+
+TaskHandle_t measureDatas;
+
+
+void measureDatasFunction( void * pvParameters ){
+  while(1){
+    measureCurrent();
+    measureVelocity();
+  }
+    
+}
 // Definições do PWM e Ponte H
 
 const int sentidoMotor1 = 2;  // Porta para definir o sentido de rotação 1.
@@ -44,6 +55,15 @@ void setup() {
 
   // sPWM
   sPWM();
+
+    xTaskCreatePinnedToCore(
+                    measureDatasFunction,         /* Task function. */
+                    "measureDatas",       /* name of task. */
+                    10000,                /* Stack size of task */
+                    NULL,                 /* parameter of the task */
+                    1,                    /* priority of the task */
+                    &measureDatas,        /* Task handle to keep track of created task */
+                    0);   
 }
 
 
@@ -55,6 +75,9 @@ void loop() {
   // // Faz a medição de corrente com filtro de media movel
   // measureCurrent();
 
+  // Serial.println(" ");
+
   // Serial.println(degrau);
 
 }
+

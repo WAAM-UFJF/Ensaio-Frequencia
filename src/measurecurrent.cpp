@@ -28,7 +28,6 @@ void measureCurrent(){
     contador++;
 
     corrente = ina219_0.getCurrent_mA();
-
     mediaMovel[(contador-1)%N] = corrente;
 
     if(contador < N){
@@ -44,5 +43,4 @@ void measureCurrent(){
         correnteFiltrada = correnteFiltrada*n;    
     }
     Serial.print(correnteFiltrada);
-    Serial.print(";");
 }
