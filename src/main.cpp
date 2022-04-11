@@ -22,6 +22,7 @@ void measureDatasFunction( void * pvParameters ){
   while(1){
     measureCurrent();
     measureVelocity();
+    Serial.println("0");
   }
     
 }
