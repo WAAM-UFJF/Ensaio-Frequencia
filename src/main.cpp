@@ -37,9 +37,6 @@ void setup() {
   // Inicializa o sensor INA219
   inicializaINA();
 
-  // Inicializa o PWM do motor com D = 0.6
-  // inicializaPWM();
-
   // Inicializa o encoder
   EncoderInit();
 
