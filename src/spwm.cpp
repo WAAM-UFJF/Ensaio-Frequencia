@@ -1,6 +1,4 @@
 #include <Arduino.h>
-// #include <measurecurrent.h>
-// #include <measurevelocity.h>
 #include <Adafruit_INA219.h>
 
 #define Num_Samples  112
@@ -10,20 +8,23 @@
 
 int freq_spwm = 100;
 int index_spwm = 0;
-static int canal = 0 , canal_meas = 1;
+static int canal = 0;
 
 double t1, t2;
 
+// Definições RTOS
 /* create a hardware timer */
 hw_timer_t * timer = NULL;
 hw_timer_t * measureDatasTimer = NULL;
 TaskHandle_t measureDatas;
+
+// Definição do sensor de corrente e tensão.
 extern Adafruit_INA219 ina219_0;
 
 
-extern int resolucaoEncoder;
-extern double phi;
-extern float w;
+int resolucaoEncoder = 400;
+double phi = 0.25*PI;
+float w;
 extern int deltaT;
 
 static const int N = 128;
@@ -51,46 +52,9 @@ void IRAM_ATTR onTimer(){
     index_spwm = 0;
 }
 
-// void IRAM_ATTR onMeasureDatas(){  
-//   measureCurrent();
-//   measureVelocity();
-// }
-
-
-// void measureDatasFunction( void * pvParameters ){
-//   measureDatas = timerBegin(1, 800, true);
-//   Serial.println("Estou em measureDatasFunction!");
-//   timerAttachInterrupt(measureDatasTimer, &onMeasureDatas, true);
-//   Serial.println("Estou em measureDatasFunction após dar o attach na interrupt!");
-//   timerAlarmWrite(measureDatasTimer, 10000000 * (1.0/(freq_spwm*Num_Samples)), true);
-//   timerAlarmEnable(measureDatasTimer);
-//   while(1){
-
-//   }    
-// }
-
-
-void onMeasureDatas(){
-  // measureCurrent();
-  // measureVelocity();
-  // Serial.println("Entrei no onMeasureDatas!");
-  Serial.println(xPortGetCoreID());
-}
-
 void measureDatasFunction( void * pvParameters ){
-  // pinMode(PIN_MEAS, OUTPUT);
-  // ledcAttachPin(PIN_MEAS, canal_meas);
-  // ledcSetup(canal_meas, 900, 8);
-  // ledcWrite(canal_meas, 128);
-  // attachInterrupt(PIN_MEAS, onMeasureDatas, RISING);
-  // // vTaskDelete(measureDatas);
   while(1){
     t1 = micros();
-    // measureCurrent();
-    // measureVelocity();
-
-
-
     float w = 0, wFiltrada = 0, corrente = 0, correnteFiltrada = 0;
     contador++;
     w = 1000.0*phi/deltaT;
@@ -118,11 +82,11 @@ void measureDatasFunction( void * pvParameters ){
     }
 
     t2 = micros();
+    Serial.print(t2 - t1);
+    Serial.print(";");
     Serial.print(wFiltrada);
     Serial.print(";");
-    Serial.print(correnteFiltrada);
-    Serial.print(";"); 
-    Serial.println("0");
+    Serial.println(correnteFiltrada);
   }
 }
 

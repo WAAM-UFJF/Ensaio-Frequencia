@@ -7,23 +7,34 @@
 // Arquivos
 #include <encoder.h>
 #include <confpwm.h>
-#include <measurecurrent.h>
-#include <measurevelocity.h>
 #include <spwm.h>
 
 #define SDA 21
 #define SCL 22
 
 
+// Definicao do sensor de corrente
+Adafruit_INA219 ina219_0 (0x40);
 
 
 
 // Definições do PWM e Ponte H
-
 const int sentidoMotor1 = 2;  // Porta para definir o sentido de rotação 1.
 const int sentidoMotor2 = 0;  // Porta para definir o sentido de rotação 2.
 
 extern int degrau;
+
+void inicializaINA(){
+    while (1){
+        if(ina219_0.begin()){
+        break;
+        }
+        Serial.println("Falha ao encontrar o INA219");
+        delay(20);
+    }
+    ina219_0.setCalibration_16V_400mA();
+}
+
 
 void setup() {
   Serial.begin(115200);
@@ -52,15 +63,9 @@ void setup() {
 
 
 void loop() {
-  // // Faz a medição de velocidade
-  // measureVelocity();
-  
-  // // Faz a medição de corrente com filtro de media movel
-  // measureCurrent();
 
-  // Serial.println(" ");
-
-  // Serial.println(degrau);
 
 }
+
+
 
