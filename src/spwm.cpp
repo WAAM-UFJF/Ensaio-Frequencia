@@ -1,13 +1,14 @@
 #include <Arduino.h>
-#include <measurecurrent.h>
-#include <measurevelocity.h>
+// #include <measurecurrent.h>
+// #include <measurevelocity.h>
+#include <Adafruit_INA219.h>
 
 #define Num_Samples  112
 
 #define PIN_PWM 16                // Porta de saída para o sPWM que alimenta a ponte-h.
 #define PIN_MEAS 32               // Define a porta que gera o sinal PWM no qual a interrupção  de leitura está alocada.
 
-int freq_spwm = 1000;
+int freq_spwm = 100;
 int index_spwm = 0;
 static int canal = 0 , canal_meas = 1;
 
@@ -17,6 +18,20 @@ double t1, t2;
 hw_timer_t * timer = NULL;
 hw_timer_t * measureDatasTimer = NULL;
 TaskHandle_t measureDatas;
+extern Adafruit_INA219 ina219_0;
+
+
+extern int resolucaoEncoder;
+extern double phi;
+extern float w;
+extern int deltaT;
+
+static const int N = 128;
+static const float n = 1.0/N;
+static float mediaMovelCorrente[N];
+static float mediaMovelVelocidade[N];
+static int contador = 0;
+
 
 const unsigned char WaveFormTable[Num_Samples] = {
     0x80, 0x83, 0x87, 0x8A, 0x8E, 0x91, 0x95, 0x98, 0x9B, 0x9E, 0xA2, 0xA5, 0xA7, 0xAA, 0xAD, 0xAF,
@@ -71,10 +86,43 @@ void measureDatasFunction( void * pvParameters ){
   // // vTaskDelete(measureDatas);
   while(1){
     t1 = micros();
-    measureCurrent();
-    measureVelocity();
+    // measureCurrent();
+    // measureVelocity();
+
+
+
+    float w = 0, wFiltrada = 0, corrente = 0, correnteFiltrada = 0;
+    contador++;
+    w = 1000.0*phi/deltaT;
+    corrente = ina219_0.getCurrent_mA();
+    
+    mediaMovelVelocidade[(contador-1)%N] = w;
+    mediaMovelCorrente[(contador-1)%N] = corrente;
+
+
+    if(contador < N){
+        for(int i=0; i<contador+1;i++){
+            wFiltrada += mediaMovelVelocidade[i];
+            correnteFiltrada += mediaMovelCorrente[i];
+        }
+        wFiltrada = wFiltrada/contador;
+        correnteFiltrada = correnteFiltrada/contador;
+    }
+    else{
+        for(int i=0; i<N; i++){
+            wFiltrada += mediaMovelVelocidade[i];
+            correnteFiltrada += mediaMovelCorrente[i];
+        }
+        wFiltrada = wFiltrada*n;    
+        correnteFiltrada = correnteFiltrada*n;  
+    }
+
     t2 = micros();
-    Serial.println(t2-t1);
+    Serial.print(wFiltrada);
+    Serial.print(";");
+    Serial.print(correnteFiltrada);
+    Serial.print(";"); 
+    Serial.println("0");
   }
 }
 
