@@ -32,6 +32,7 @@ static const float n = 1.0/N;
 static float mediaMovelCorrente[N];
 static float mediaMovelVelocidade[N];
 static int contador = 0;
+float corrente;
 
 
 const unsigned char WaveFormTable[Num_Samples] = {
@@ -52,43 +53,108 @@ void IRAM_ATTR onTimer(){
     index_spwm = 0;
 }
 
+// void measureDatasFunction( void * pvParameters ){
+//   while(1){
+//     t1 = micros();
+//     float w = 0, wFiltrada = 0, corrente = 0, correnteFiltrada = 0;
+//     contador++;
+//     w = 1000.0*phi/deltaT;
+//     corrente = ina219_0.getCurrent_mA();
+    
+//     mediaMovelVelocidade[(contador-1)%N] = w;
+//     mediaMovelCorrente[(contador-1)%N] = corrente;
+
+
+//     if(contador < N){
+//         for(int i=0; i<contador+1;i++){
+//             wFiltrada += mediaMovelVelocidade[i];
+//             correnteFiltrada += mediaMovelCorrente[i];
+//         }
+//         wFiltrada = wFiltrada/contador;
+//         correnteFiltrada = correnteFiltrada/contador;
+//     }
+//     else{
+//         for(int i=0; i<N; i++){
+//             wFiltrada += mediaMovelVelocidade[i];
+//             correnteFiltrada += mediaMovelCorrente[i];
+//         }
+//         wFiltrada = wFiltrada*n;    
+//         correnteFiltrada = correnteFiltrada*n;  
+//     }
+
+//     t2 = micros();
+//     Serial.print(t2 - t1);
+//     Serial.print(";");
+//     Serial.print(wFiltrada);
+//     Serial.print(";");
+//     Serial.println(correnteFiltrada);
+//   }
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void measureDatasFunction( void * pvParameters ){
   while(1){
     t1 = micros();
-    float w = 0, wFiltrada = 0, corrente = 0, correnteFiltrada = 0;
-    contador++;
+    
     w = 1000.0*phi/deltaT;
     corrente = ina219_0.getCurrent_mA();
     
-    mediaMovelVelocidade[(contador-1)%N] = w;
-    mediaMovelCorrente[(contador-1)%N] = corrente;
-
-
-    if(contador < N){
-        for(int i=0; i<contador+1;i++){
-            wFiltrada += mediaMovelVelocidade[i];
-            correnteFiltrada += mediaMovelCorrente[i];
-        }
-        wFiltrada = wFiltrada/contador;
-        correnteFiltrada = correnteFiltrada/contador;
-    }
-    else{
-        for(int i=0; i<N; i++){
-            wFiltrada += mediaMovelVelocidade[i];
-            correnteFiltrada += mediaMovelCorrente[i];
-        }
-        wFiltrada = wFiltrada*n;    
-        correnteFiltrada = correnteFiltrada*n;  
-    }
-
     t2 = micros();
     Serial.print(t2 - t1);
     Serial.print(";");
-    Serial.print(wFiltrada);
+    Serial.print(corrente);
     Serial.print(";");
-    Serial.println(correnteFiltrada);
+    Serial.println(w);
+    
+    
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 void sPWM() {

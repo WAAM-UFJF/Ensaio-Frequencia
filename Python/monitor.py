@@ -22,10 +22,11 @@ def animate(i):
     graph.plot(velocidade,corrente)
       
 
-COM = 'COM6'# /dev/ttyACM0 (Linux)
+COM = 'COM3'# /dev/ttyACM0 (Linux)
 BAUD = 115200
 
 ser = serial.Serial(COM, BAUD, timeout = .1)
+
 
 print('Waiting for device');
 sleep(3)
